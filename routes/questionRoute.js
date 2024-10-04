@@ -3,10 +3,10 @@ const express = require("express");
 const router = express.Router();
 //question controllers
 const {
-  //  allquestions,
-  //  singlequestion,
+  getAllQuestions,
   postquestion,
 } = require("../controller/questionController");
+
 
 router.get("/all-questions", getAllQuestions);
 
