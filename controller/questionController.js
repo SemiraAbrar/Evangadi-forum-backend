@@ -43,4 +43,32 @@ async function postquestion(req, res) {
     });
   }
 }
-module.exports = { allquestions, singlequestion, postquestion };
+
+// all question controller
+async function getAllQuestions(req, res) {
+
+  try {
+    const [allQuestions] = await dbConnection.query(
+      `SELECT q.questionid As question_id, q.title, q.description As content, q.created_at, u.username FROM questions AS q 
+    JOIN users AS u ON q.userid = u.userid ORDER BY q.id DESC;`
+    );
+
+    // Check if any questions were found
+    if (allQuestions.length === 0) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ msg: "No questions found." });
+    }
+
+    console.log(allQuestions);
+    return res.status(StatusCodes.OK).json({ questions: allQuestions });
+  } catch (error) {
+
+    console.log(error.message);
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ msg: "An unexpected error occurred" });
+  }
+}
+
+module.exports = { getAllQuestions, postquestion };
