@@ -28,13 +28,13 @@ async function postquestion(req, res) {
     });
   }
   try {
-    await dbconnection.query(
+      const [question]=  await dbconnection.query(
       "INSERT INTO questions (userid, questionid, title, description, tag) values ( ?, ?, ?, ?, ?)",
       [userId, generatedquestionid, title, description, tag]
     );
     return res
       .status(201)
-      .json({ message: "Question created successfully", data: data });
+      .json({ message: "Question created successfully", data: question });
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({
