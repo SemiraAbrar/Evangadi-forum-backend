@@ -66,11 +66,11 @@ const login = async (req, res) => {
   }
 
   try {
-    const [user]= await dbConnection.query(
+    const [user] = await dbConnection.query(
       "SELECT username, userid,password from users where email = ?",
       [email]
     );
-    //  return res.json({ user: user });  
+    //  return res.json({ user: user });
     if (user.length == 0) {
       return res.status(StatusCodes.BAD_REQUEST).json({
         msg: "Invalid credentials ",
@@ -85,14 +85,13 @@ const login = async (req, res) => {
         msg: "Invalid email or password",
       });
     }
-    
-    // return res.json({ user:user[0].password });
 
+    // return res.json({ user:user[0].password });
 
     const username = user[0].username;
     const userid = user[0].userid;
     const token = jwt.sign({ username, userid }, "secret", { expiresIn: "1d" });
-    
+
     return res.status(StatusCodes.OK).json({
       message: "User login successful",
       token,

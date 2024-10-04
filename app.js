@@ -18,7 +18,11 @@ app.use(express.json());
 app.use("/api/user", userRoutes);
 
 //questions routes middleware ??
-app.use("/api/questions", authMiddleware, questionsRoute);
+
+
+app.use("/api/questions", questionsRoute);
+//http://localhost:5500/api/questions/postquestion
+// router.post("/postquestion", postquestion);
 
 // answers routes middleware??
 
