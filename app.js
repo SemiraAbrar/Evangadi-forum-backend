@@ -9,6 +9,8 @@ const dbConnection = require("./db/dbConfig");
 const userRoutes = require("./routes/userRoute");
 //question routes middleware file
 const questionsRoute = require("./routes/questionRoute");
+//answer routes middleware file
+const answerRoute=require("./routes/answerRoute")
 
 //authentication middleware
 const authMiddleware = require("./middleware/authMiddleware");
@@ -21,6 +23,7 @@ app.use("/api/user", userRoutes);
 app.use("/api/questions", authMiddleware, questionsRoute);
 
 // answers routes middleware??
+app.use("/api/answer", authMiddleware, answerRoute);
 
 async function start() {
   try {
