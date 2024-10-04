@@ -1,33 +1,33 @@
 // import modules
 const dbconnection = require("../db/dbConfig"); //db_config
 
-//const { statusCodes } = require("http-status-codes");
+const {  StatusCodes } = require("http-status-codes");
 //const jwt = require("jsonwebtoken");
 const { v4: uuidv4 } = require("uuid");
 
 //postquestion controller
 async function postquestion(req, res) {
   const { title, description, tag } = req.body;
-  const generatedquestionid = uuidv4(); //to generate question id
   const userId = req.user.userid; //aess  userid from usertable by req.user from jwt token
-
+  
   if (!title || !description || title.length <= 1 || description.length <= 10) {
-    return res.status(400).json({
+    return res.status(StatusCodes.BAD_REQUEST).json({
       error: "Bad Request",
       message: "please provide all required information",
     });
   }
+  const generatedquestionid = uuidv4(); //to generate question id
   try {
     const [question] = await dbconnection.query(
       "INSERT INTO questions (userid, questionid, title, description, tag) values ( ?, ?, ?, ?, ?)",
       [userId, generatedquestionid, title, description, tag]
     );
     return res
-      .status(201)
+      .status(StatusCodes.CREATED)
       .json({ message: "Question created successfully", data: question });
   } catch (error) {
     console.log(error.message);
-    return res.status(500).json({
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
       error: "Internal Server Error",
       message: "An unexpected error occurred",
     });
