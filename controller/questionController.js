@@ -1,5 +1,5 @@
 // import modules
-const dbconnection = require("../db/dbConfig"); //db_config
+const dbConnection = require("../db/dbConfig"); //db_config
 
 const {  StatusCodes } = require("http-status-codes");
 //const jwt = require("jsonwebtoken");
@@ -18,7 +18,7 @@ async function postquestion(req, res) {
   }
   const generatedquestionid = uuidv4(); //to generate question id
   try {
-    const [question] = await dbconnection.query(
+    const [question] = await dbConnection.query(
       "INSERT INTO questions (userid, questionid, title, description, tag) values ( ?, ?, ?, ?, ?)",
       [userId, generatedquestionid, title, description, tag]
     );
