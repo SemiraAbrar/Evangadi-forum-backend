@@ -59,4 +59,20 @@ async function getAllQuestions(req, res) {
   }
 }
 
-module.exports = { getAllQuestions, postquestion };
+
+async function SingleQuestion(req, res) {
+ 
+  const question_id = req.params.question_id
+try {
+const result = await  dbConnection.query("select * from questions where questionid=?",[question_id]) 
+const data = result[0][0]
+res.send(data)
+} catch (error) {
+res.send(error.message);
+  return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({msg: "An unexpected error occurred"})
+}
+
+}
+
+
+module.exports = { getAllQuestions, postquestion,  SingleQuestion};
