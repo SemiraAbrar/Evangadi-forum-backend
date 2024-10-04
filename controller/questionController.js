@@ -5,16 +5,6 @@ const dbconnection = require("../db/dbConfig"); //db_config
 //const jwt = require("jsonwebtoken");
 const { v4: uuidv4 } = require("uuid");
 
-//all question controller
-async function allquestions(req, res) {
-  res.send("all question");
-}
-
-//singlequestion controller
-async function singlequestion(req, res) {
-  res.send("single question");
-}
-
 //postquestion controller
 async function postquestion(req, res) {
   const { title, description, tag } = req.body;
@@ -28,7 +18,7 @@ async function postquestion(req, res) {
     });
   }
   try {
-      const [question]=  await dbconnection.query(
+    const [question] = await dbconnection.query(
       "INSERT INTO questions (userid, questionid, title, description, tag) values ( ?, ?, ?, ?, ?)",
       [userId, generatedquestionid, title, description, tag]
     );
@@ -46,7 +36,6 @@ async function postquestion(req, res) {
 
 // all question controller
 async function getAllQuestions(req, res) {
-
   try {
     const [allQuestions] = await dbConnection.query(
       `SELECT q.questionid As question_id, q.title, q.description As content, q.created_at, u.username FROM questions AS q 
@@ -63,7 +52,6 @@ async function getAllQuestions(req, res) {
     console.log(allQuestions);
     return res.status(StatusCodes.OK).json({ questions: allQuestions });
   } catch (error) {
-
     console.log(error.message);
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
