@@ -7,7 +7,7 @@ const getAnswer = async (req, res) => {
   const username = req.user.username;
   try {
     const [answers] = await dbConnection.query(
-      "SELECT answerid AS answer_id, answer AS content, created_at, ? as user_name FROM answers WHERE questionid = ?",
+      "SELECT answerid  AS answer_id,answer AS content,created_at,? as user_name FROM answers where questionid= ?",
       [username, questionid]
     );
 
@@ -50,6 +50,5 @@ const postAnswers = async (req, res) => {
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ msg: "An unexpected error occurred." });
   }
-};
-
-module.exports = { getAnswer, postAnswers };
+}
+module.exports = { postAnswers,getAnswer };
