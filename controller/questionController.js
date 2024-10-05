@@ -59,7 +59,6 @@ async function getAllQuestions(req, res) {
   }
 }
 
-
 // SingleQuestion
 
 async function SingleQuestion(req, res) {
