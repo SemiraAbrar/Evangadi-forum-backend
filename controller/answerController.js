@@ -1,4 +1,4 @@
-const db = require("../db/dbConfig");
+const dbConnection = require("../db/dbConfig");
 const { StatusCodes } = require("http-status-codes");
 
 // =====================================get answer for a question=========================================
@@ -6,7 +6,7 @@ const getAnswer = async (req, res) => {
   const { questionid } = req.params;
   const username = req.user.username;
   try {
-    const [answers] = await db.query(
+    const [answers] = await dbConnection.query(
       "SELECT answerid  AS answer_id,answer AS content,created_at,? as user_name FROM answers where questionid= ?",
       [username, questionid]
     );
@@ -27,7 +27,7 @@ const getAnswer = async (req, res) => {
     });
   }
 };
-module.exports = getAnswer;
+
 
 const jwt = require("jsonwebtoken");
 
@@ -56,4 +56,4 @@ async function postAnswers(req, res) {
       .json({ msg: "An unexpected error occurred." });
   }
 }
-module.exports = { postAnswers };
+module.exports = { postAnswers,getAnswer };
