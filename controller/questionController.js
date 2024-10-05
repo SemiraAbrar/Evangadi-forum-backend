@@ -33,7 +33,6 @@ async function postquestion(req, res) {
     });
   }
 }
-
 // all question controller
 async function getAllQuestions(req, res) {
   try {
@@ -58,9 +57,7 @@ async function getAllQuestions(req, res) {
       .json({ msg: "An unexpected error occurred" });
   }
 }
-
 // SingleQuestion
-
 async function SingleQuestion(req, res) {
   const question_id = req.params.question_id;
   // check the question id

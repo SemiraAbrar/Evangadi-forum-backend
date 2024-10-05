@@ -1,8 +1,7 @@
 const dbConnection = require("../db/dbConfig");
-const dbConnection = require("../db/dbConfig");
 const { StatusCodes } = require("http-status-codes");
 
-// =====================================get answer for a question=========================================
+
 const getAnswer = async (req, res) => {
   const { questionid } = req.params;
   const username = req.user.username;
