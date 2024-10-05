@@ -60,19 +60,30 @@ async function getAllQuestions(req, res) {
 }
 
 
+// SingleQuestion
+
 async function SingleQuestion(req, res) {
- 
   const question_id = req.params.question_id
+  // check the question id
+
 try {
-const result = await  dbConnection.query("select * from questions where questionid=?",[question_id]) 
-const data = result[0][0]
-res.send(data)
+  const result = await  dbConnection.query("select questionid AS question_id,	title, description AS content,userid AS user_id,created_at from questions where questionid=?",[question_id]) 
+
+  const question = result[0][0]
+  //check data exists
+  if (!question) {
+  return res.status(StatusCodes.NOT_FOUND).json({ msg: "The requested question could not be found."
+  });
+}
+  // res.send(data)  // Send the found data 
+  return res.status(StatusCodes.OK).json({question});
 } catch (error) {
-res.send(error.message);
-  return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({msg: "An unexpected error occurred"})
+ console.error(error.message);
+ return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({msg: "An unexpected error occurred."
+  })
+}      
 }
 
-}
 
 
 module.exports = { getAllQuestions, postquestion,  SingleQuestion};
