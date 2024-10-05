@@ -13,18 +13,47 @@ const getAnswer = async (req, res) => {
 
     if (answers.length === 0) {
       return res.status(StatusCodes.NOT_FOUND).json({
-        message: "The requested question could not be found.",
+        message: "The requested question could not be found."
       });
     } else {
       return res.status(StatusCodes.OK).json({
-        answers: answers,
+        answers: answers
       });
     }
   } catch (error) {
     console.log(error.message);
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      message: "An unexpected error occurred",
+      message: "An unexpected error occurred"
     });
   }
 };
 module.exports = getAnswer;
+
+const jwt = require("jsonwebtoken");
+
+async function postAnswers(req, res) {
+  const { questionid, answer } = req.body;
+  console.log(req.body);
+  if (!answer || !questionid) {
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ msg: "Please provide answer" });
+  }
+
+  try {
+    const userid = req.user.userid;
+
+    await dbConnection.query(
+      "INSERT INTO answers ( userid, questionid, answer) VALUES (?,?,?)",
+      [userid, questionid, answer]
+    );
+
+    res.status(StatusCodes.CREATED).json({ msg: "Answer posted successfully" });
+  } catch (error) {
+    console.log(error.message);
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ msg: "An unexpected error occurred." });
+  }
+}
+module.exports = { postAnswers };
