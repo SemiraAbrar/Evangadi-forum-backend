@@ -1,4 +1,5 @@
 const dbConnection = require("../db/dbConfig");
+const dbConnection = require("../db/dbConfig");
 const { StatusCodes } = require("http-status-codes");
 
 // =====================================get answer for a question=========================================
@@ -51,4 +52,4 @@ const postAnswers = async (req, res) => {
       .json({ msg: "An unexpected error occurred." });
   }
 }
-module.exports = { postAnswers,getAnswer };
+module.exports = { postAnswers,getAnswer };
