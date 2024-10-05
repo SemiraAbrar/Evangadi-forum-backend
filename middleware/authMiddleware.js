@@ -21,7 +21,7 @@ async function authMiddleware(req, res, next) {
   } catch (error) {
     return res
       .status(StatusCodes.UNAUTHORIZED)
-      .json({ msg: "Authentication invalid" });
+      .json({ msg: "Authentication invalidd" });
   }
 }
 
