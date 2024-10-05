@@ -1,4 +1,4 @@
-const dbConnection = require("../db/dbConfig");
+const db = require("../db/dbConfig");
 const { StatusCodes } = require("http-status-codes");
 
 // =====================================get answer for a question=========================================
@@ -6,40 +6,45 @@ const getAnswer = async (req, res) => {
   const { questionid } = req.params;
   const username = req.user.username;
   try {
-    const [answers] = await dbConnection.query(
-      "SELECT answerid AS answer_id, answer AS content, created_at, ? as user_name FROM answers WHERE questionid = ?",
+    const [answers] = await db.query(
+      "SELECT answerid  AS answer_id,answer AS content,created_at,? as user_name FROM answers where questionid= ?",
       [username, questionid]
     );
 
     if (answers.length === 0) {
       return res.status(StatusCodes.NOT_FOUND).json({
-        message: "The requested question could not be found.",
+        message: "The requested question could not be found."
       });
     } else {
-      return res.status(StatusCodes.OK).json({ answers: answers });
+      return res.status(StatusCodes.OK).json({
+        answers: answers
+      });
     }
   } catch (error) {
     console.log(error.message);
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      message: "An unexpected error occurred",
+      message: "An unexpected error occurred"
     });
   }
 };
+module.exports = getAnswer;
 
-const postAnswers = async (req, res) => {
+const jwt = require("jsonwebtoken");
+
+async function postAnswers(req, res) {
   const { questionid, answer } = req.body;
   console.log(req.body);
   if (!answer || !questionid) {
     return res
       .status(StatusCodes.BAD_REQUEST)
-      .json({ msg: "Please provide an answer" });
+      .json({ msg: "Please provide answer" });
   }
 
   try {
     const userid = req.user.userid;
 
     await dbConnection.query(
-      "INSERT INTO answers (userid, questionid, answer) VALUES (?, ?, ?)",
+      "INSERT INTO answers ( userid, questionid, answer) VALUES (?,?,?)",
       [userid, questionid, answer]
     );
 
@@ -50,6 +55,5 @@ const postAnswers = async (req, res) => {
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ msg: "An unexpected error occurred." });
   }
-};
-
-module.exports = { getAnswer, postAnswers };
+}
+module.exports = { postAnswers };
