@@ -29,7 +29,7 @@ const getAnswer = async (req, res) => {
 const postAnswers = async (req, res) => {
   const { questionid, answer } = req.body;
   console.log(req.body);
-  if (!answer || !questionid) {
+  if (!answer) {
     return res
       .status(StatusCodes.BAD_REQUEST)
       .json({ msg: "Please provide an answer" });

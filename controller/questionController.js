@@ -8,9 +8,9 @@ const { v4: uuidv4 } = require("uuid");
 //postquestion controller
 async function postquestion(req, res) {
   const { title, description, tag } = req.body;
-  const userId = req.user.userid; //aess  userid from usertable by req.user from jwt token
+  const userId = req.user.userid; //acess  userid from usertable by req.user from jwt token
 
-  if (!title || !description || title.length <= 1 || description.length <= 10) {
+  if (!title || !description ) {
     return res.status(StatusCodes.BAD_REQUEST).json({
       error: "Bad Request",
       message: "please provide all required information",
@@ -37,7 +37,7 @@ async function postquestion(req, res) {
 async function getAllQuestions(req, res) {
   try {
     const [allQuestions] = await dbConnection.query(
-      `SELECT q.id As question_id, q.title, q.description As content, q.created_at, u.username FROM questions AS q 
+      `SELECT q.id As Id,q.questionid As question_id, q.title, q.description As content, q.created_at, u.username FROM questions AS q 
     JOIN users AS u ON q.userid = u.userid ORDER BY q.id DESC;`
     );
 
