@@ -10,7 +10,7 @@ const getAnswer = async (req, res) => {
       "SELECT answerid  AS answer_id,answer AS content,created_at,? as username FROM answers where questionid= ?",
       [username, questionid]
     );
-localStorage
+
     if (answers.length === 0) {
       return res.status(StatusCodes.NOT_FOUND).json({
         message: "The requested question could not be found.",
