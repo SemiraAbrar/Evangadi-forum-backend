@@ -1,16 +1,14 @@
 const dbConnection = require("../db/dbConfig");
 const { StatusCodes } = require("http-status-codes");
 
-
 const getAnswer = async (req, res) => {
   const { questionid } = req.params;
-  const username = req.user.username;
+
   try {
     const [answers] = await dbConnection.query(
-      "SELECT answerid  AS answer_id,answer AS content,created_at,? as username FROM answers where questionid= ?",
-      [username, questionid]
+      `SELECT answerid AS answer_id, answer AS content, created_at, u.username FROM answers a JOIN users u ON a.userid = u.userid WHERE questionid = ? ORDER BY a.created_at DESC`,
+      [questionid]
     );
-
     if (answers.length === 0) {
       return res.status(StatusCodes.NOT_FOUND).json({
         message: "The requested question could not be found.",
@@ -50,5 +48,5 @@ const postAnswers = async (req, res) => {
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ msg: "An unexpected error occurred." });
   }
-}
-module.exports = { postAnswers,getAnswer };
+};
+module.exports = { postAnswers, getAnswer };
