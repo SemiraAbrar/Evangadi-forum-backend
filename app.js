@@ -1,9 +1,14 @@
+require("dotenv").config();
 const express = require("express");
+
 const app = express();
-const port = 1234;
+const port = 3000;
 
-
-const cors = require('cors')
+// console.log("DB_USERNAME:", process.env.DB_USERNAME);
+// console.log("DB_PASSWORD:", process.env.DB_PASSWORD);
+// console.log("DB_HOST:", process.env.DB_HOST);
+// console.log("DB_NAME:", process.env.DB_NAME);
+const cors = require("cors");
 app.use(cors());
 // db connection
 const dbConnection = require("./db/dbConfig");
@@ -13,7 +18,7 @@ const userRoutes = require("./routes/userRoute");
 //question routes middleware file
 const questionsRoute = require("./routes/questionRoute");
 //answer routes middleware file
-const answerRoute=require("./routes/answerRoute")
+const answerRoute = require("./routes/answerRoute");
 
 //authentication middleware
 const authMiddleware = require("./middleware/authMiddleware");
@@ -37,6 +42,7 @@ async function start() {
     console.log(`listening on ${port}`);
   } catch (error) {
     console.log(error.message);
+    console.error("Error establishing database connection:", error.message);
   }
 }
 start();
