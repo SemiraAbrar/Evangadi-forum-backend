@@ -2,7 +2,7 @@ require("dotenv").config();
 const express = require("express");
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 1234;
 
 // console.log("DB_USERNAME:", process.env.DB_USERNAME);
 // console.log("DB_PASSWORD:", process.env.DB_PASSWORD);
